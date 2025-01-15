@@ -61,17 +61,18 @@ def decode_16_bit_float(register):
     return struct.unpack('>e', byte_value)[0]
 
 #%% Read data
-def read_data(addr, reg_type):
-    if reg_type == 'input':
-        idx       = list(zip(*input_registers))[0][:].index(addr)
-        data_type = input_registers[idx][1]
-        count     = input_registers[idx][2]
-        data  = client.read_input_registers(address=addr, count=count).registers
-    else:
+def read_data(addr, reg_type=None):
+    if reg_type == 'holding':
         idx       = list(zip(*holding_registers))[0][:].index(addr)
         data_type = holding_registers[idx][1]
         count     = holding_registers[idx][2]
         data  = client.read_holding_registers(address=addr, count=count).registers
+
+    else:
+        idx       = list(zip(*input_registers))[0][:].index(addr)
+        data_type = input_registers[idx][1]
+        count     = input_registers[idx][2]
+        data  = client.read_input_registers(address=addr, count=count).registers
     
     if data_type == 'uint32':
         value = decode_32_bit_integer(data)

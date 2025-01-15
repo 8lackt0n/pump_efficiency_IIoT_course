@@ -3,11 +3,11 @@ import Modbus_Functions as mb
 import time
 
 #%%
-print(mb.read_data(0, "input"))
+print(mb.read_data(0))
 print(mb.read_data(0, "holding"))
 
-print(mb.read_data(1, "input"))
-print(mb.read_data(7, "input"))
+print(mb.read_data(1))
+print(mb.read_data(7))
 
 
 mb.manual_mode()
@@ -19,11 +19,11 @@ mb.write_data(3, 200)
 print(mb.read_data(3, "holding"))
 
 time.sleep(2)
-print(mb.read_data(0, "input"))
+print(mb.read_data(0))
 print(mb.read_data(0, "holding"))
 
-print(mb.read_data(1, "input"))
-print(mb.read_data(7, "input"))
+print(mb.read_data(1))
+print(mb.read_data(7))
 
 time.sleep(2)
 print(mb.read_data(0, "holding"))
@@ -31,8 +31,8 @@ print(mb.read_data(0, "holding"))
 mb.auto_mode()
 
 time.sleep(2)
-print(mb.read_data(0, "input"))
+print(mb.read_data(0))
 print(mb.read_data(0, "holding"))
 
-print(mb.read_data(1, "input"))
-print(mb.read_data(7, "input"))
+print(mb.read_data(1))
+print(mb.read_data(7))
