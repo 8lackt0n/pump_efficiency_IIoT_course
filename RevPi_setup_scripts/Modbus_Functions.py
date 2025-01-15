@@ -46,26 +46,53 @@ def decode_32_bit_float(registers):
     binary_string = b''.join(handle)
     return struct.unpack('!f', binary_string)[0]
 
+def encode_16_bit_integer(value):
+    return struct.unpack('>H', struct.pack('>H', int(value)))
+
+def encode_16_bit_float(value):
+    byte_value = struct.pack('>e', float(value))
+    return struct.unpack('>H', byte_value)
+
+def decode_16_bit_integer(register):
+    return struct.unpack('>H', struct.pack('>H', register[0]))[0]
+
+def decode_16_bit_float(register):
+    byte_value = struct.pack('>H', register)
+    return struct.unpack('>e', byte_value)[0]
+
 #%% Read data
-def read_data(addr):
-    idx       = list(zip(*input_registers))[0][:].index(addr)
-    data_type = input_registers[idx][1]
-    count     = input_registers[idx][2]
+def read_data(addr, reg_type):
+    if reg_type == 'input':
+        idx       = list(zip(*input_registers))[0][:].index(addr)
+        data_type = input_registers[idx][1]
+        count     = input_registers[idx][2]
+        data  = client.read_input_registers(address=addr, count=count).registers
+    else:
+        idx       = list(zip(*holding_registers))[0][:].index(addr)
+        data_type = holding_registers[idx][1]
+        count     = holding_registers[idx][2]
+        data  = client.read_holding_registers(address=addr, count=count).registers
     
-    data  = client.read_input_registers(address=addr, count=count).registers
     if data_type == 'uint32':
         value = decode_32_bit_integer(data)
     elif data_type == 'float32':
         value = decode_32_bit_float(data)
+    elif data_type == 'uint16':
+        value = decode_16_bit_integer(data)
+        
+    elif data_type == 'float16':
+        value = decode_16_bit_float(data)
+        print("Note, not fully tested, and at half precision, for float16")
     else:
         value = data
-        print('Data is not 32 bit, no decoder is available')
+        print('Data is not in a supported format, uint32, uint16, float32, float16, no decoder available.')
 
     return value
 
 #%% Write data
 def manual_mode():
-    client.write_registers(address=0, values=(1, 1))
+    val = encode_16_bit_float(1)
+    client.write_registers(address=0, values=val)
     print('PLC is in manual mode')
 
 def write_data(addr, val):
@@ -77,11 +104,17 @@ def write_data(addr, val):
         data = encode_32_bit_integer(val)
     elif data_type == 'float32':
         data = encode_32_bit_float(val)
+    elif data_type == 'uint16':
+        data = encode_16_bit_integer(val)
+    elif data_type == 'float16':
+        data = encode_16_bit_float(val)
+        print("Note, not fully tested, and at half precision, for float16")
     else:
-        print('Data is not 32 bit, no encoder is available')
+        print('Data is not in a supported format, uint32, uint16, float32, float16, no encoder available.')
     
     client.write_registers(address=addr, values=data)
 
 def auto_mode():
-    client.write_registers(address=0, values=(0, 0))
+    val = encode_16_bit_float(0)
+    client.write_registers(address=0, values=val)
     print('PLC is in autonomous mode')
