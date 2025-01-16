@@ -14,7 +14,7 @@ print('Speed set to 0')
 print('Waiting for ramp down')
 time.sleep(10)
 
-speeds = np.arange(50, 1500, 50)
+speeds = np.arange(50, 1550, 50)
 
 s1 = np.zeros(len(speeds))
 s2 = np.zeros(len(speeds))
