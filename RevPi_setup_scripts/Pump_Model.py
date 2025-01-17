@@ -1,17 +1,16 @@
 #%% Drawing
 #
-#   Grid          Drive 1        Motor 1       Turbine 1
-#    ___
-#   /   \        ________       ________       ________
-#  /     \      |        |     |        |     |        |
-# |   ~   |-----|   D1   |-----|   M1   |-----|   T1   |---
-#  \     /      |________|     |________|     |________|
-#   \___/            |              |              |
-#           P_in     |     P_e      |     P_m      |     P_r
-#           V_in     |     T_e      |     T_m      |     Q_out
-#           I_in     |     w_e      |     w_m      |     p_out
-#                    |              |              |
-#
+#    Grid          Drive 1        Motor 1       Turbine 1
+#    _____
+#   /     \        ________       ________       ________
+#  /       \      |        |     |        |     |        |
+# |    ~    |-----|   D1   |-----|   M1   |-----|   T1   |---
+#  \       /      |________|     |________|     |________|
+#   \_____/            |              |              |
+#            P_in      |     P_e      |     P_m      |     P_r
+#            V_in      |     T_e      |     T_m      |     Q_out
+#            I_in      |     w_e      |     w_m      |     p_out
+#                      |              |              |
 #%% Importing packages
 #import numpy as np
 #import math as m
